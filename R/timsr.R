@@ -1,0 +1,169 @@
+# *   TimsR: a fully open-source library for opening Bruker's TimsTOF data files.
+# *   Copyright (C) 2020 Michał Startek and Mateusz Łącki
+# *
+# *   This program is free software: you can redistribute it and/or modify
+# *   it under the terms of the GNU General Public License, version 3 only,
+# *   as published by the Free Software Foundation.
+# *
+# *   This program is distributed in the hope that it will be useful,
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# *   GNU General Public License for more details.
+# *
+# *   You should have received a copy of the GNU General Public License
+# *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+#' Advanced TimsTOF data accessor.
+#'
+#' S4 class that facilitates data queries for TimsTOF data.
+#'
+#' @importFrom opentimsr OpenTIMS
+#' @export
+setClass("TimsR", contains="OpenTIMS")
+
+
+all_columns = c('frame','scan','tof','intensity','mz','inv_ion_mobility','retention_time')
+
+
+#' Get TimsR data accessor.
+#' 
+#' @param path.d Path to the TimsTOF '*.d' folder containing the data (requires the folder to contain only 'analysis.tdf' and 'analysis.tdf_bin').
+#' @examples
+#' \dontrun{
+#' D = TimsR(path_to_.d_folder)
+#' D[1] # First frame.
+#' }
+#' @importFrom opentimsr OpenTIMS
+#' @export
+TimsR = function(path.d){
+    new("TimsR", OpenTIMS(path.d))
+}
+
+
+#' Get some frames of data.
+#'
+#' @param x OpenTIMS data instance.
+#' @param i An array of nonzero indices to extract.
+#' @importFrom data.table setDT
+#' @importFrom methods callNextMethod 
+setMethod("[",
+          signature(x = "TimsR", i = "ANY"),
+          function(x, i){
+            dt = callNextMethod(x, i)
+            data.table::setDT(dt)
+            dt
+          })
+
+#' Query for raw data.
+#'
+#' Get the raw data from Bruker's 'tdf_bin' format.
+#' Defaults to both raw data ('frame','scan','tof','intensity') and its tranformations into physical units ('mz','inv_ion_mobility','retention_time').
+#'
+#' @param opentims Instance of TimsR.
+#' @param frames Vector of frame numbers to extract.
+#' @param columns Vector of columns to extract. Defaults to all columns.
+#' @return data.frame with selected columns.
+#' @importFrom data.table setDT
+#' @importFrom opentimsr query
+#' @export
+query = function(timsr,
+                 frames,
+                 columns=all_columns){
+    dt = opentimsr::query(timsr, frames, columns)
+    data.table::setDT(dt)
+    dt
+}
+
+
+#' Get some frames of data.
+#'
+#' @param x OpenTIMS data instance.
+#' @param i An array of nonzero indices to extract.
+#' @importFrom data.table setDT
+#' @importFrom methods callNextMethod 
+setMethod("[",
+          signature(x = "TimsR", i = "ANY", j="character"),
+          function(x, i, j) query(x, i, j)
+          )
+
+
+get_left_frame = function(x,y) ifelse(x > y[length(y)], NA, findInterval(x, y, left.open=T) + 1)
+get_right_frame = function(x,y) ifelse(x < y[1], NA, findInterval(x, y, left.open=F))
+
+
+#' Get the retention time for each frame.
+#'
+#' Extract all frames corresponding to retention times inside [min_retention_time, max_retention_time] closed borders interval.
+#'
+#' @param opentims Instance of OpenTIMS.
+#' @param min_retention_time Lower boundry on retention time.
+#' @param max_retention_time Upper boundry on retention time.
+#' @param columns Vector of columns to extract. Defaults to all columns.
+#' @return data.frame with selected columns.
+#' @importFrom data.table setDT
+#' @importFrom opentimsr retention_times
+#' @export
+rt_query = function(timsr,
+                    min_retention_time,
+                    max_retention_time,
+                    columns=all_columns){
+
+  RTS = opentimsr::retention_times(timsr)
+
+  min_frame = get_left_frame(min_retention_time, RTS)
+  max_frame = get_right_frame(max_retention_time, RTS)
+
+  if(is.na(min_frame) | is.na(max_frame))
+    stop("The [min_retention_time,max_retention_time] interval does not hold any data.")
+  
+  query(timsr, min_frame:max_frame, columns)
+}
+
+
+
+#' Clean memory.
+#'
+#' Check <https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command> 
+#' @export
+cleanMem = function(n=10) { for (i in 1:n) gc() }
+
+
+#' Get Bruker's code needed for running proprietary time of flight to mass over charge and scan to drift time conversion. 
+#'
+#' By using this function you aggree to terms of license precised in "https://github.com/MatteoLacki/opentims_bruker_bridge".
+#' The conversion, due to independent code-base restrictions, are possible only on Linux and Windows operating systems.
+#' Works on full open-source solution are on the way. 
+#'
+#' @param target.folder Folder where to store the 'dll' or 'so' file.
+#' @param net_url The url with location of all files.
+#' @param mode Which mode to use when downloading a file?
+#' @param ... Other parameters to 'download.file'.
+#' @return Path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
+#' @importFrom utils download.file
+#' @importFrom opentimsr download_bruker_proprietary_code
+#' @export
+download_bruker_proprietary_code = function(
+  target.folder, 
+  net_url=paste0("https://github.com/MatteoLacki/opentims_bruker_bridge/",
+                 "raw/main/opentims_bruker_bridge/"),
+  mode="wb",
+  ...) opentimsr::download_bruker_proprietary_code(
+        target.folder,
+        net_url,
+        mode,
+        ...)
+
+
+
+#' Dynamically link Bruker's DLL to enable tof-mz and scan-inv_ion_mobility conversion.
+#'
+#' By using this function you aggree to terms of license precised in "https://github.com/MatteoLacki/opentims_bruker_bridge".
+#' The conversion, due to independent code-base restrictions, are possible only on Linux and Windows operating systems.
+#' Works on full open-source solution are on the way. 
+#'
+#' @param path Path to the 'libtimsdata.so' on Linux or 'timsdata.dll' on Windows, as produced by 'download_bruker_proprietary_code'.
+#' @export
+#' @importFrom opentimsr setup_bruker_so
+setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
+
