@@ -170,33 +170,22 @@ But we are monitoring the developments of somewhat similar `dtplyr::lazy_dt` and
 
 ### Installation
 
-```{bash}
-pip install timspy
+```R
+install.packages('TimsR')
 ```
-or for devel version:
-```{bash}
-pip install -e git+https://github.com/MatteoLacki/timspy/tree/devel
+or 
+```R
+library(devtools)
+
+install_github("MatteoLacki/timsr")
 ```
 or with git:
 ```{bash}
-git clone https://github.com/MatteoLacki/timspy
-cd timspy
-pip install -e .
-```
+git clone https://github.com/MatteoLacki/timsr
 
-To install vaex support, use
-```{bash}
-pip install timspy[vaex]
+R CMD build timsr_*.tar.gz
+R CMD INSTALL timsr_*.tar.gz
 ```
-or install add in additional modules
-```{bash}
-pip install vaex-core vaex-hdf5
-```
-which seems much less of a hastle than figuring out how pypi internals work.
-
-### API documentation
-
-Please [visit our documentation page](https://matteolacki.github.io/timspy/index.html).
 
 ### Too bloat?
 
