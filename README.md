@@ -241,6 +241,7 @@ install.packages('TimsR')
 ```
 or 
 ```R
+# install.packages("devtools") # you will need that.
 library(devtools)
 
 install_github("MatteoLacki/timsr")
