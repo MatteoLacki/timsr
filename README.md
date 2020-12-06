@@ -25,7 +25,7 @@ Continuing on the previous example:
 ```R
 D.plot_TIC()
 ```
-![](https://github.com/MatteoLacki/timsr/blob/master/ms1_ms2_intensities.png "TIC per frame")
+![](https://github.com/MatteoLacki/timsr/blob/main/ms1_ms2_intensities.png "TIC per frame")
 <!-- 
 ```R
 D.plot_peak_counts()
