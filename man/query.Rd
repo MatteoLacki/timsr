@@ -7,11 +7,11 @@
 query(timsr, frames, columns = all_columns)
 }
 \arguments{
+\item{timsr}{Instance of TimsR.}
+
 \item{frames}{Vector of frame numbers to extract.}
 
 \item{columns}{Vector of columns to extract. Defaults to all columns.}
-
-\item{opentims}{Instance of TimsR.}
 }
 \value{
 data.frame with selected columns.

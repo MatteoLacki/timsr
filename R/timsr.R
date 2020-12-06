@@ -55,12 +55,75 @@ setMethod("[",
             dt
           })
 
+
+#' Extract tables from sqlite database analysis.tdf.
+#'
+#' Export a table from sqlite.
+#'
+#' @param timsr Instance of TimsR
+#' @param names Names to extract from the sqlite database.
+#' @return A data.table with proper contents.
+#' @export
+#' @importFrom opentimsr table2df
+#' @importFrom data.table as.data.table 
+table2dt = function(timsr, names) data.table::as.data.table(opentimsr::table2df(timsr, names))
+
+
+#' Extract tables from sqlite database analysis.tdf.
+#'
+#' @param timsr Instance of TimsR
+#' @return Names of tables.
+#' @export
+#' @importFrom opentimsr tables_names
+tables_names = function(timsr) opentimsr::tables_names(timsr)
+
+
+#' Explore the contentents of the sqlite .tdf database.
+#'
+#' @param timsr Instance of TimsR
+#' @return List of data.table objects filled with data from 'analysis.tdf'.
+#' @export
+tdf.tables = function(timsr){
+    .table_names = tables_names(timsr) 
+    res = lapply(.table_names, table2dt, timsr=timsr)
+    names(res) = .table_names
+    res
+}
+
+
+#' Get MS1 frame numbers.
+#'
+#' @param timsr Instance of TimsR
+#' @return Numbers of frames corresponding to MS1, i.e. precursor ions.
+#' @export
+#' @importFrom opentimsr MS1
+MS1 = function(timsr) opentimsr::MS1(timsr)
+
+
+#' Get the number of peaks per frame.
+#'
+#' @param timsr Instance of TimsR.
+#' @return Number of peaks in each frame.
+#' @export
+#' @importFrom opentimsr peaks_per_frame_cnts
+peaks_per_frame_cnts = function(timsr) opentimsr::peaks_per_frame_cnts(timsr)
+
+
+#' Get the retention time for each frame.
+#'
+#' @param timsr Instance of TimsR.
+#' @return Retention times corresponding to each frame.
+#' @export
+#' @importFrom opentimsr retention_times
+retention_times = function(timsr) opentimsr::retention_times(timsr)
+
+
 #' Query for raw data.
 #'
 #' Get the raw data from Bruker's 'tdf_bin' format.
 #' Defaults to both raw data ('frame','scan','tof','intensity') and its tranformations into physical units ('mz','inv_ion_mobility','retention_time').
 #'
-#' @param opentims Instance of TimsR.
+#' @param timsr Instance of TimsR.
 #' @param frames Vector of frame numbers to extract.
 #' @param columns Vector of columns to extract. Defaults to all columns.
 #' @return data.frame with selected columns.
@@ -140,7 +203,6 @@ cleanMem = function(n=10) { for (i in 1:n) gc() }
 #' @param mode Which mode to use when downloading a file?
 #' @param ... Other parameters to 'download.file'.
 #' @return Path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
-#' @importFrom utils download.file
 #' @importFrom opentimsr download_bruker_proprietary_code
 #' @export
 download_bruker_proprietary_code = function(
