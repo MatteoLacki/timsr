@@ -136,6 +136,66 @@ D[1:100]
 # All MS1 frames, but one at a time:
 for(fr in MS1(D)) print(D[fr, all_columns])
 # Of course, it's better to use lapply or mclapply to speed up things.
+
+# Extracting information from 'analysis.tdf':
+# here are table names
+tables_names(D)
+#  [1] "CalibrationInfo"          "DiaFrameMsMsInfo"        
+#  [3] "DiaFrameMsMsWindowGroups" "DiaFrameMsMsWindows"     
+#  [5] "ErrorLog"                 "FrameMsMsInfo"           
+#  [7] "FrameProperties"          "Frames"                  
+#  [9] "GlobalMetadata"           "GroupProperties"         
+# [11] "MzCalibration"            "Properties"              
+# [13] "PropertyDefinitions"      "PropertyGroups"          
+# [15] "Segments"                 "TimsCalibration"
+
+# To get only one, use:
+table2dt(D, 'Frames')
+#           Id         Time Polarity ScanMode MsMsType    TimsId MaxIntensity
+#     1:     1    0.3264921        +        9        0         0          192
+#     2:     2    0.4347063        +        9        9      8192         2384
+#     3:     3    0.5409869        +        9        9     32768         4905
+#     4:     4    0.6488865        +        9        9     61440         6206
+#     5:     5    0.7566600        +        9        9     94208         6206
+#    ---                                                                     
+# 11549: 11549 1243.4941418        +        9        9 995598336          129
+# 11550: 11550 1243.5991705        +        9        9 995602432          137
+# 11551: 11551 1243.7072909        +        9        0 995606528          253
+# 11552: 11552 1243.8112220        +        9        9 995631104          167
+# 11553: 11553 1243.9193366        +        9        9 995635200          155
+#        SummedIntensities NumScans NumPeaks MzCalibration       T1       T2
+#     1:             95955      918     1601             1 25.57090 26.67739
+#     2:            579402      918     6598             1 25.57090 26.67739
+#     3:            907089      918     8706             1 25.57090 26.67739
+#     4:           1192350      918    10820             1 25.57090 26.67739
+#     5:           1408123      918    12597             1 25.57090 26.67739
+#    ---                                                                    
+# 11549:              5065      918      319             1 25.57136 26.63330
+# 11550:              5414      918      345             1 25.57128 26.63330
+# 11551:            406508      918     6743             1 25.57128 26.63330
+# 11552:              8097      918      360             1 25.57128 26.63330
+# 11553:              8633      918      397             1 25.57128 26.63330
+#        TimsCalibration PropertyGroup AccumulationTime RampTime
+#     1:               1             1           99.953   99.953
+#     2:               1             1           99.953   99.953
+#     3:               1             1           99.953   99.953
+#     4:               1             1           99.953   99.953
+#     5:               1             1           99.953   99.953
+#    ---                                                        
+# 11549:               1             1           99.953   99.953
+# 11550:               1             1           99.953   99.953
+# 11551:               1             1           99.953   99.953
+# 11552:               1             1           99.953   99.953
+# 11553:               1             1           99.953   99.953
+
+
+# To get all of them as a named list of data.tables:
+tdf.tables = tdf.tables(D)
+tdf.tables[['TimsCalibration']]
+#    Id ModelType C0  C1       C2       C3 C4 C5           C6       C7       C8
+# 1:  1         2  1 917 213.5998 75.81729 33  1 -0.009065829 135.4364 13.32608
+#          C9
+# 1: 1663.341
 ```
 
 ### Basic plotting
