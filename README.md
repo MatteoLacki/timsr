@@ -196,6 +196,12 @@ tdf.tables[['TimsCalibration']]
 # 1:  1         2  1 917 213.5998 75.81729 33  1 -0.009065829 135.4364 13.32608
 #          C9
 # 1: 1663.341
+
+
+# Remember, R is ultimately a BAD BAD computer language.
+# If you have problems with memory getting freed immediately, 
+# you can call the garbage collector using:
+cleanMem()
 ```
 
 ### Basic plotting

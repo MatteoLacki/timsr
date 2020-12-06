@@ -175,3 +175,7 @@ tdf.tables[['TimsCalibration']]
 # 1: 1663.341
 
 
+# Remember, R is ultimately a BAD BAD computer language.
+# If you have problems with memory getting freed immediately, 
+# you can call the garbage collector using:
+cleanMem()
