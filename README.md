@@ -25,8 +25,8 @@ Continuing on the previous example:
 ```R
 D.plot_TIC()
 ```
-![](https://github.com/MatteoLacki/timspy/blob/master/ms1ms2intensity.png "TIC per frame")
-
+![](https://github.com/MatteoLacki/timsr/blob/master/ms1_ms2_intensities.png "TIC per frame")
+<!-- 
 ```R
 D.plot_peak_counts()
 ```
@@ -36,7 +36,7 @@ D.plot_peak_counts()
 D.plot_intensity_given_mz_inv_ion_mobility()
 ```
 ![](https://github.com/MatteoLacki/timspy/blob/master/ms1_heatmap.png "TIC per frame")
-
+ -->
 ### Vaex support?
 
 Unfortunately, there is yet no equivalent of vaex on R.

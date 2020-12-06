@@ -91,6 +91,7 @@ tdf.tables = function(timsr){
 }
 
 
+
 #' Get MS1 frame numbers.
 #'
 #' @param timsr Instance of TimsR
@@ -159,7 +160,7 @@ get_right_frame = function(x,y) ifelse(x < y[1], NA, findInterval(x, y, left.ope
 #'
 #' Extract all frames corresponding to retention times inside [min_retention_time, max_retention_time] closed borders interval.
 #'
-#' @param opentims Instance of OpenTIMS.
+#' @param timsr Instance of TimsR
 #' @param min_retention_time Lower boundry on retention time.
 #' @param max_retention_time Upper boundry on retention time.
 #' @param columns Vector of columns to extract. Defaults to all columns.
@@ -229,3 +230,50 @@ download_bruker_proprietary_code = function(
 #' @importFrom opentimsr setup_bruker_so
 setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 
+
+#' Get sum of intensity per each frame (retention time).
+#' 
+#' @param timsr Instance of TimsR
+#' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
+#' @export
+intensity_per_frame = function(timsr, recalibrated=TRUE){
+    if(recalibrated){
+        frames = table2dt(timsr,'Frames')
+        .intensity_per_frame = frames$SummedIntensities
+    } else {
+        .intensity_per_frame = sapply(
+            timsr@min_frame:timsr@max_frame,
+            function(fr) sum(timsr[fr, c('intensity')]$intensity))
+    }
+    return(.intensity_per_frame)
+}
+
+
+#' Plot intensity per retention time.
+#'
+#' Plot will split 'MS1' and 'MS2'.
+#' 
+#' @param timsr Instance of TimsR
+#' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
+#' @export
+plot_TIC = function(timsr, recalibrated=TRUE){
+    I = intensity_per_frame(timsr, recalibrated)
+    RT = retention_times(timsr)
+    frames = table2dt(timsr, "Frames")
+    .ms1_mask = frames$MsMsType == 0   
+    plot(RT[.ms1_mask],
+         I[.ms1_mask], 
+         type='l',
+         col='red',
+         xlab='Retention Time',
+         ylab='Intensity')
+    lines(RT[!.ms1_mask],
+          I[!.ms1_mask],
+          type='l',
+          col='blue')
+    legend("topright", 
+           legend=c("MS1", "MS2"),
+           col=c("red", "blue"),
+           lty=c(1,1),
+           cex=1.5)
+}

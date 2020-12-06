@@ -7,13 +7,13 @@
 rt_query(timsr, min_retention_time, max_retention_time, columns = all_columns)
 }
 \arguments{
+\item{timsr}{Instance of TimsR}
+
 \item{min_retention_time}{Lower boundry on retention time.}
 
 \item{max_retention_time}{Upper boundry on retention time.}
 
 \item{columns}{Vector of columns to extract. Defaults to all columns.}
-
-\item{opentims}{Instance of OpenTIMS.}
 }
 \value{
 data.frame with selected columns.
