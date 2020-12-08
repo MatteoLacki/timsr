@@ -244,6 +244,7 @@ or
 # install.packages("devtools") # you will need that.
 library(devtools)
 
+install_github("michalsta/opentims", subdir="opentimsr")
 install_github("MatteoLacki/timsr")
 ```
 or with git:
