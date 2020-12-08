@@ -15,3 +15,9 @@ Retention times corresponding to each frame.
 \description{
 Get the retention time for each frame.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(retention_times(D)) 
+}
+}

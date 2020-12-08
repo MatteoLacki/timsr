@@ -14,3 +14,10 @@ plot_TIC(timsr, recalibrated = TRUE)
 \description{
 Plot will split 'MS1' and 'MS2'.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+plot_TIC(D)
+plot_TIC(D, recalibrated=FALSE)
+}
+}

@@ -14,3 +14,10 @@
 \description{
 Get some frames of data.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(head(D[10]))
+print(head(D[10:100]))
+}
+}

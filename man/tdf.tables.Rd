@@ -15,3 +15,9 @@ List of data.table objects filled with data from 'analysis.tdf'.
 \description{
 Explore the contentents of the sqlite .tdf database.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(tdf.tables(D)) 
+}
+}

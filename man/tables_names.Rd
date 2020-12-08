@@ -15,3 +15,9 @@ Names of tables.
 \description{
 Extract tables from sqlite database analysis.tdf.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(tables_names(D)) 
+}
+}

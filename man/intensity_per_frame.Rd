@@ -14,3 +14,10 @@ intensity_per_frame(timsr, recalibrated = TRUE)
 \description{
 Get sum of intensity per each frame (retention time).
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(intensity_per_frame(D))
+print(intensity_per_frame(D, recalibrated=FALSE)) 
+}
+}

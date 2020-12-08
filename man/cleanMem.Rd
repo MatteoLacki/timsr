@@ -9,3 +9,8 @@ cleanMem(n = 10)
 \description{
 Check \url{https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command}
 }
+\examples{
+\dontrun{
+cleanMem()
+}
+}

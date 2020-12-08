@@ -14,3 +14,10 @@
 \description{
 Get some frames of data.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(D[c(1,20, 53), c('frame','scan','tof','intensity','mz','inv_ion_mobility','retention_time')] # extract all columns
+print(D[c(1,20, 53), c('scan','intensity')] # only 'scan' and 'intensity'
+}
+}

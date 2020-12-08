@@ -17,3 +17,9 @@ A data.table with proper contents.
 \description{
 Export a table from sqlite.
 }
+\examples{
+\dontrun{
+D = TimsR('path/to/your/folder.d')
+print(head(table2dt(D, "Frames"))) # Extract table "Frames".
+}
+}
