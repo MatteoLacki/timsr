@@ -46,7 +46,13 @@ TimsR = function(path.d){
 #' @param x OpenTIMS data instance.
 #' @param i An array of nonzero indices to extract.
 #' @importFrom data.table setDT
-#' @importFrom methods callNextMethod 
+#' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(head(D[10]))
+#' print(head(D[10:100]))
+#' }
 setMethod("[",
           signature(x = "TimsR", i = "ANY"),
           function(x, i){
@@ -66,6 +72,11 @@ setMethod("[",
 #' @export
 #' @importFrom opentimsr table2df
 #' @importFrom data.table as.data.table 
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(head(table2dt(D, "Frames"))) # Extract table "Frames".
+#' }
 table2dt = function(timsr, names) data.table::as.data.table(opentimsr::table2df(timsr, names))
 
 
@@ -75,6 +86,11 @@ table2dt = function(timsr, names) data.table::as.data.table(opentimsr::table2df(
 #' @return Names of tables.
 #' @export
 #' @importFrom opentimsr tables_names
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(tables_names(D)) 
+#' }
 tables_names = function(timsr) opentimsr::tables_names(timsr)
 
 
@@ -83,6 +99,11 @@ tables_names = function(timsr) opentimsr::tables_names(timsr)
 #' @param timsr Instance of TimsR
 #' @return List of data.table objects filled with data from 'analysis.tdf'.
 #' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(tdf.tables(D)) 
+#' }
 tdf.tables = function(timsr){
     .table_names = tables_names(timsr) 
     res = lapply(.table_names, table2dt, timsr=timsr)
@@ -98,6 +119,11 @@ tdf.tables = function(timsr){
 #' @return Numbers of frames corresponding to MS1, i.e. precursor ions.
 #' @export
 #' @importFrom opentimsr MS1
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(MS1(D)) 
+#' }
 MS1 = function(timsr) opentimsr::MS1(timsr)
 
 
@@ -107,6 +133,11 @@ MS1 = function(timsr) opentimsr::MS1(timsr)
 #' @return Number of peaks in each frame.
 #' @export
 #' @importFrom opentimsr peaks_per_frame_cnts
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(peaks_per_frame_cnts(D)) 
+#' }
 peaks_per_frame_cnts = function(timsr) opentimsr::peaks_per_frame_cnts(timsr)
 
 
@@ -116,6 +147,11 @@ peaks_per_frame_cnts = function(timsr) opentimsr::peaks_per_frame_cnts(timsr)
 #' @return Retention times corresponding to each frame.
 #' @export
 #' @importFrom opentimsr retention_times
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(retention_times(D)) 
+#' }
 retention_times = function(timsr) opentimsr::retention_times(timsr)
 
 
@@ -131,6 +167,12 @@ retention_times = function(timsr) opentimsr::retention_times(timsr)
 #' @importFrom data.table setDT
 #' @importFrom opentimsr query
 #' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(query(D, c(1,20, 53)) # extract all columns
+#' print(query(D, c(1,20, 53), columns=c('scan','intensity')) # only 'scan' and 'intensity'
+#' }
 query = function(timsr,
                  frames,
                  columns=all_columns){
@@ -145,7 +187,13 @@ query = function(timsr,
 #' @param x OpenTIMS data instance.
 #' @param i An array of nonzero indices to extract.
 #' @importFrom data.table setDT
-#' @importFrom methods callNextMethod 
+#' @importFrom methods callNextMethod
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(D[c(1,20, 53), c('frame','scan','tof','intensity','mz','inv_ion_mobility','retention_time')] # extract all columns
+#' print(D[c(1,20, 53), c('scan','intensity')] # only 'scan' and 'intensity'
+#' }
 setMethod("[",
           signature(x = "TimsR", i = "ANY", j="character"),
           function(x, i, j) query(x, i, j)
@@ -168,6 +216,12 @@ get_right_frame = function(x,y) ifelse(x < y[1], NA, findInterval(x, y, left.ope
 #' @importFrom data.table setDT
 #' @importFrom opentimsr retention_times
 #' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(query_slice(D, 10, 200, 4)) # extract every fourth frame between 10 and 200. 
+#' print(query_slice(D, 10, 200, 4, columns=c('scan','intensity')) # only 'scan' and 'intensity'
+#' }
 rt_query = function(timsr,
                     min_retention_time,
                     max_retention_time,
@@ -190,6 +244,10 @@ rt_query = function(timsr,
 #'
 #' Check <https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command> 
 #' @export
+#' @examples
+#' \dontrun{
+#' cleanMem()
+#' }
 cleanMem = function(n=10) { for (i in 1:n) gc() }
 
 
@@ -206,6 +264,10 @@ cleanMem = function(n=10) { for (i in 1:n) gc() }
 #' @return Path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
 #' @importFrom opentimsr download_bruker_proprietary_code
 #' @export
+#' @examples
+#' \dontrun{
+#' download_bruker_proprietary_code("your/prefered/destination/folder")
+#' }
 download_bruker_proprietary_code = function(
   target.folder, 
   net_url=paste0("https://github.com/MatteoLacki/opentims_bruker_bridge/",
@@ -228,6 +290,11 @@ download_bruker_proprietary_code = function(
 #' @param path Path to the 'libtimsdata.so' on Linux or 'timsdata.dll' on Windows, as produced by 'download_bruker_proprietary_code'.
 #' @export
 #' @importFrom opentimsr setup_bruker_so
+#' @examples
+#' \dontrun{
+#' so_path = download_bruker_proprietary_code("your/prefered/destination/folder")
+#' setup_bruker_so(so_path)
+#' }
 setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 
 
@@ -236,6 +303,12 @@ setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 #' @param timsr Instance of TimsR
 #' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
 #' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' print(intensity_per_frame(D))
+#' print(intensity_per_frame(D, recalibrated=FALSE)) 
+#' }
 intensity_per_frame = function(timsr, recalibrated=TRUE){
     if(recalibrated){
         frames = table2dt(timsr,'Frames')
@@ -256,6 +329,12 @@ intensity_per_frame = function(timsr, recalibrated=TRUE){
 #' @param timsr Instance of TimsR
 #' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
 #' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' plot_TIC(D)
+#' plot_TIC(D, recalibrated=FALSE)
+#' }
 plot_TIC = function(timsr, recalibrated=TRUE){
     I = intensity_per_frame(timsr, recalibrated)
     RT = retention_times(timsr)
