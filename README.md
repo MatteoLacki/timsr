@@ -133,6 +133,26 @@ D[1:100]
 # 1633358:   100  915 100120       120
 
 
+# The frame lasts a convenient time unit that well suits chromatography peak elution.
+# What if you were interested instead in finding out which frames eluted in a given time 
+# time of the experiment?
+# For this reasone, we have prepared a retention time based query:
+# suppose you are interested in all frames corresponding to all that eluted between 10 and 12 second of the experiment.
+pprint(rt_query(opentims, 10, 12))
+#         frame scan    tof intensity        mz inv_ion_mobility retention_time
+#      1:    92   33 361758         9 1456.2835        1.6011418       10.08690
+#      2:    92   36  65738         9  222.2822        1.5977164       10.08690
+#      3:    92   41 308330         9 1153.5909        1.5920078       10.08690
+#      4:    92   43 123618         9  378.5190        1.5897245       10.08690
+#      5:    92   48  65346         9  221.3651        1.5840168       10.08690
+#     ---                                                                      
+# 128130:   109  914 138760        65  426.2142        0.6041389       11.91001
+# 128131:   109  914 142129        69  437.2109        0.6041389       11.91001
+# 128132:   109  914 144566        58  445.2528        0.6041389       11.91001
+# 128133:   109  916 138933        91  426.7755        0.6018958       11.91001
+# 128134:   109  917 373182         9 1525.5765        0.6007742       11.91001
+
+
 # All MS1 frames, but one at a time:
 for(fr in MS1(D)) print(D[fr, all_columns])
 # Of course, it's better to use lapply or mclapply to speed up things.
