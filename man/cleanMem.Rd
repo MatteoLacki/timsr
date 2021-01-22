@@ -4,9 +4,15 @@
 \alias{cleanMem}
 \title{Clean memory.}
 \usage{
-cleanMem(n = 10)
+cleanMem(times = 10)
+}
+\arguments{
+\item{times}{Number of times to run garbage collection.}
 }
 \description{
+Run garbage collection, by default - 10 times.
+}
+\details{
 Check \url{https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command}
 }
 \examples{

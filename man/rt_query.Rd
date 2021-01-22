@@ -19,7 +19,7 @@ rt_query(timsr, min_retention_time, max_retention_time, columns = all_columns)
 data.frame with selected columns.
 }
 \description{
-Extract all frames corresponding to retention times inside \link{min_retention_time, max_retention_time} closed borders interval.
+Get the retention time for each frame.
 }
 \examples{
 \dontrun{

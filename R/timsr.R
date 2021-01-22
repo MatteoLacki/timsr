@@ -35,6 +35,7 @@ all_columns = c('frame','scan','tof','intensity','mz','inv_ion_mobility','retent
 #' D[1] # First frame.
 #' }
 #' @importFrom opentimsr OpenTIMS
+#' @importFrom methods new
 #' @export
 TimsR = function(path.d){
     new("TimsR", OpenTIMS(path.d))
@@ -185,14 +186,20 @@ query = function(timsr,
 #' Get some frames of data.
 #'
 #' @param x OpenTIMS data instance.
-#' @param i An array of nonzero indices to extract.
+#' @param i An array of nonzero frame numbers to extract.
+#' @param j A vector of strings with column names to extract.
 #' @importFrom data.table setDT
 #' @importFrom methods callNextMethod
 #' @examples
 #' \dontrun{
 #' D = TimsR('path/to/your/folder.d')
-#' print(D[c(1,20, 53), c('frame','scan','tof','intensity','mz','inv_ion_mobility','retention_time')] # extract all columns
-#' print(D[c(1,20, 53), c('scan','intensity')] # only 'scan' and 'intensity'
+#' all_cols = c('frame','scan','tof','intensity',
+#'              'mz','inv_ion_mobility','retention_time')
+#' print(D[c(1,20, 53), all_cols]
+#' # extracted all columns
+#' 
+#' print(D[c(1,20, 53), c('scan','intensity')]
+#' # only 'scan' and 'intensity'
 #' }
 setMethod("[",
           signature(x = "TimsR", i = "ANY", j="character"),
@@ -205,8 +212,6 @@ get_right_frame = function(x,y) ifelse(x < y[1], NA, findInterval(x, y, left.ope
 
 
 #' Get the retention time for each frame.
-#'
-#' Extract all frames corresponding to retention times inside [min_retention_time, max_retention_time] closed borders interval.
 #'
 #' @param timsr Instance of TimsR
 #' @param min_retention_time Lower boundry on retention time.
@@ -241,14 +246,17 @@ rt_query = function(timsr,
 
 
 #' Clean memory.
+#' 
+#' Run garbage collection, by default - 10 times.
 #'
 #' Check <https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command> 
 #' @export
+#' @param times Number of times to run garbage collection.
 #' @examples
 #' \dontrun{
 #' cleanMem()
 #' }
-cleanMem = function(n=10) { for (i in 1:n) gc() }
+cleanMem = function(times=10) { for (i in 1:times) gc() }
 
 
 #' Get Bruker's code needed for running proprietary time of flight to mass over charge and scan to drift time conversion. 
@@ -329,6 +337,7 @@ intensity_per_frame = function(timsr, recalibrated=TRUE){
 #' @param timsr Instance of TimsR
 #' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
 #' @export
+#' @importFrom graphics legend lines
 #' @examples
 #' \dontrun{
 #' D = TimsR('path/to/your/folder.d')

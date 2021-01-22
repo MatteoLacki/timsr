@@ -9,7 +9,9 @@
 \arguments{
 \item{x}{OpenTIMS data instance.}
 
-\item{i}{An array of nonzero indices to extract.}
+\item{i}{An array of nonzero frame numbers to extract.}
+
+\item{j}{A vector of strings with column names to extract.}
 }
 \description{
 Get some frames of data.
@@ -17,7 +19,12 @@ Get some frames of data.
 \examples{
 \dontrun{
 D = TimsR('path/to/your/folder.d')
-print(D[c(1,20, 53), c('frame','scan','tof','intensity','mz','inv_ion_mobility','retention_time')] # extract all columns
-print(D[c(1,20, 53), c('scan','intensity')] # only 'scan' and 'intensity'
+all_cols = c('frame','scan','tof','intensity',
+             'mz','inv_ion_mobility','retention_time')
+print(D[c(1,20, 53), all_cols]
+# extracted all columns
+
+print(D[c(1,20, 53), c('scan','intensity')]
+# only 'scan' and 'intensity'
 }
 }

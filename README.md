@@ -13,7 +13,7 @@ TimsPy is open-source, but as it uses OpenTIMS under the hood, it comes with sim
 Simple way to get data out of results collected with your Bruker timsTOF Pro from R.
 This definitely ain't no rocket science, but is pretty useful!
 The data is reported in stored in `data.table` objects, that are the only thing `R` has to actually work meaningfully with big data sets.
-Before using `TimsR`, it makes a lot of sense to [study this package](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html).
+Before using `TimsR`, it makes a lot of sense to [study this package](https://CRAN.R-project.org/package=data.table).
 A helpful cheatsheet is available [here](https://raw.githubusercontent.com/rstudio/cheatsheets/master/datatable.pdf).
 
 With that out of the way, it's all as easy as shown below:
@@ -231,7 +231,7 @@ Continuing on the previous example:
 ```R
 D.plot_TIC()
 ```
-![](https://github.com/MatteoLacki/timsr/blob/main/ms1_ms2_intensities.png "TIC per frame")
+![](https://github.com/MatteoLacki/timsr/blob/main/fms1_ms2_intensities.png "TIC per frame")
 <!-- 
 ```R
 D.plot_peak_counts()
