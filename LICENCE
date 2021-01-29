@@ -2,13 +2,6 @@ TimsR is released under the terms of GNU GPL v3 licence, as
 published by the Free Software Foundation. Full text below.
 If you require other licensing terms please contact the authors.
 
-TimsR contains built-in versions of the following software:
-- sqlite3, public domain
-- ZSTD, BSD licence
-- mio, MIT licence
-
-See the respective files for details.
-
 ============================================================
 
 
