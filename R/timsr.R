@@ -41,6 +41,20 @@ TimsR = function(path.d){
     new("TimsR", OpenTIMS(path.d))
 }
 
+#' Get border values for measurements.
+#'
+#' Get the min-max values of the measured variables (except for TOFs, that would require iteration through data rather than parsing metadata).
+#' 
+#' @param timsr Instance of TimsR.
+#' @return data.frame Limits of individual extracted quantities.
+#' @export
+#' @examples
+#' \dontrun{
+#' D = TimsR('path/to/your/folder.d')
+#' min_max_measurements(D) # this gives a small data-frame with min and max values.
+#' }
+min_max_measurements = function(timsr) opentimsr::min_max_measurements(timsr)
+
 
 #' Get some frames of data.
 #'
