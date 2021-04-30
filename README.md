@@ -138,7 +138,7 @@ D[1:100]
 # time of the experiment?
 # For this reasone, we have prepared a retention time based query:
 # suppose you are interested in all frames corresponding to all that eluted between 10 and 12 second of the experiment.
-pprint(rt_query(opentims, 10, 12))
+pprint(rt_query(D, 10, 12))
 #         frame scan    tof intensity        mz inv_ion_mobility retention_time
 #      1:    92   33 361758         9 1456.2835        1.6011418       10.08690
 #      2:    92   36  65738         9  222.2822        1.5977164       10.08690
