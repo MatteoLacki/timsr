@@ -1,6 +1,6 @@
 Package: timsr
 Title: Easily Access timsTOF Data
-Version: 0.0.1
+Version: 0.0.2
 Authors@R:
     c(person(given = "Mateusz Krzysztof",
              family = "Łącki",
