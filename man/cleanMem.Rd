@@ -9,6 +9,9 @@ cleanMem(times = 10)
 \arguments{
 \item{times}{Number of times to run garbage collection.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Run garbage collection, by default - 10 times.
 }

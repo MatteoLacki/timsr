@@ -12,7 +12,7 @@ table2dt(timsr, names)
 \item{names}{Names to extract from the sqlite database.}
 }
 \value{
-A data.table with proper contents.
+data.table
 }
 \description{
 Export a table from sqlite.

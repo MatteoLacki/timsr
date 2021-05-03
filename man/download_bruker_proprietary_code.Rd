@@ -22,7 +22,7 @@ download_bruker_proprietary_code(
 \item{...}{Other parameters to 'download.file'.}
 }
 \value{
-Path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
+character, path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
 }
 \description{
 By using this function you aggree to terms of license precised in "https://github.com/MatteoLacki/opentims_bruker_bridge".

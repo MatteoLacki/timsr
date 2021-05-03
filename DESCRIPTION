@@ -17,7 +17,6 @@ Maintainer: Mateusz Krzysztof Łącki <matteo.lacki@gmail.com>
 Description: Access 'timsTOF' mass spectrometry data, as described <https://sso.bruker.com/auth/realms/bruker/protocol/openid-connect/auth?client_id=aem-bruker.com&redirect_uri=https%3A%2F%2Fwww.bruker.com%2Fen.login.html%3FtargetUrl%3Dhttps%3A%2F%2Fwww.bruker.com%2Fen%2Fservices%2Fsoftware-downloads%2Fmass-spectrometry.html&response_type=id_token%20token&scope=openid%20profile&state=4f9d225e92f341cca3b03a55533dbd65&nonce=f550633b1e984ecfb07979ae6d9277b4&ui_locales=en> (after registering), using the 'OpenTIMS' C++ reader and save all into 'data.tables'.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends:

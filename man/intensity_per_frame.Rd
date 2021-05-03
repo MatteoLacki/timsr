@@ -11,6 +11,9 @@ intensity_per_frame(timsr, recalibrated = TRUE)
 
 \item{recalibrated}{Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?}
 }
+\value{
+integer vector: total intensity per each frame.
+}
 \description{
 Get sum of intensity per each frame (retention time).
 }

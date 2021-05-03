@@ -37,6 +37,7 @@ all_columns = c('frame','scan','tof','intensity','mz','inv_ion_mobility','retent
 #' @importFrom opentimsr OpenTIMS
 #' @importFrom methods new
 #' @export
+#' @return instance of TimsR class that represents raw data
 TimsR = function(path.d){
     new("TimsR", OpenTIMS(path.d))
 }
@@ -68,6 +69,7 @@ min_max_measurements = function(timsr) opentimsr::min_max_measurements(timsr)
 #' print(head(D[10]))
 #' print(head(D[10:100]))
 #' }
+#' @return data.table
 setMethod("[",
           signature(x = "TimsR", i = "ANY"),
           function(x, i){
@@ -83,7 +85,6 @@ setMethod("[",
 #'
 #' @param timsr Instance of TimsR
 #' @param names Names to extract from the sqlite database.
-#' @return A data.table with proper contents.
 #' @export
 #' @importFrom opentimsr table2df
 #' @importFrom data.table as.data.table 
@@ -92,13 +93,14 @@ setMethod("[",
 #' D = TimsR('path/to/your/folder.d')
 #' print(head(table2dt(D, "Frames"))) # Extract table "Frames".
 #' }
+#' @return data.table
 table2dt = function(timsr, names) data.table::as.data.table(opentimsr::table2df(timsr, names))
 
 
 #' Extract tables from sqlite database analysis.tdf.
 #'
 #' @param timsr Instance of TimsR
-#' @return Names of tables.
+#' @return character, names of tables.
 #' @export
 #' @importFrom opentimsr tables_names
 #' @examples
@@ -112,7 +114,7 @@ tables_names = function(timsr) opentimsr::tables_names(timsr)
 #' Explore the contentents of the sqlite .tdf database.
 #'
 #' @param timsr Instance of TimsR
-#' @return List of data.table objects filled with data from 'analysis.tdf'.
+#' @return List of data.tables filled with data from 'analysis.tdf'.
 #' @export
 #' @examples
 #' \dontrun{
@@ -215,6 +217,7 @@ query = function(timsr,
 #' print(D[c(1,20, 53), c('scan','intensity')]
 #' # only 'scan' and 'intensity'
 #' }
+#' @return data.table
 setMethod("[",
           signature(x = "TimsR", i = "ANY", j="character"),
           function(x, i, j) query(x, i, j)
@@ -222,6 +225,7 @@ setMethod("[",
 
 
 get_left_frame = function(x,y) ifelse(x > y[length(y)], NA, findInterval(x, y, left.open=T) + 1)
+
 get_right_frame = function(x,y) ifelse(x < y[1], NA, findInterval(x, y, left.open=F))
 
 
@@ -266,6 +270,7 @@ rt_query = function(timsr,
 #' Check <https://stackoverflow.com/questions/1467201/forcing-garbage-collection-to-run-in-r-with-the-gc-command> 
 #' @export
 #' @param times Number of times to run garbage collection.
+#' @return No return value, called for side effects.
 #' @examples
 #' \dontrun{
 #' cleanMem()
@@ -283,7 +288,7 @@ cleanMem = function(times=10) { for (i in 1:times) gc() }
 #' @param net_url The url with location of all files.
 #' @param mode Which mode to use when downloading a file?
 #' @param ... Other parameters to 'download.file'.
-#' @return Path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
+#' @return character, path to the output 'timsdata.dll' on Windows and 'libtimsdata.so' on Linux.
 #' @importFrom opentimsr download_bruker_proprietary_code
 #' @export
 #' @examples
@@ -317,6 +322,7 @@ download_bruker_proprietary_code = function(
 #' so_path = download_bruker_proprietary_code("your/prefered/destination/folder")
 #' setup_bruker_so(so_path)
 #' }
+#' @return No return value, called for side effects.
 setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 
 
@@ -331,6 +337,7 @@ setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 #' print(intensity_per_frame(D))
 #' print(intensity_per_frame(D, recalibrated=FALSE)) 
 #' }
+#' @return integer vector: total intensity per each frame. 
 intensity_per_frame = function(timsr, recalibrated=TRUE){
     if(recalibrated){
         frames = table2dt(timsr,'Frames')
@@ -351,13 +358,14 @@ intensity_per_frame = function(timsr, recalibrated=TRUE){
 #' @param timsr Instance of TimsR
 #' @param recalibrated Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?
 #' @export
-#' @importFrom graphics legend lines
+#' @importFrom graphics legend lines plot
 #' @examples
 #' \dontrun{
 #' D = TimsR('path/to/your/folder.d')
 #' plot_TIC(D)
 #' plot_TIC(D, recalibrated=FALSE)
 #' }
+#' @return No return value, called for side effects.
 plot_TIC = function(timsr, recalibrated=TRUE){
     I = intensity_per_frame(timsr, recalibrated)
     RT = retention_times(timsr)

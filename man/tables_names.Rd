@@ -10,7 +10,7 @@ tables_names(timsr)
 \item{timsr}{Instance of TimsR}
 }
 \value{
-Names of tables.
+character, names of tables.
 }
 \description{
 Extract tables from sqlite database analysis.tdf.

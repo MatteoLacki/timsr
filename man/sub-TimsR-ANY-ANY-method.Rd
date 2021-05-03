@@ -11,6 +11,9 @@
 
 \item{i}{An array of nonzero indices to extract.}
 }
+\value{
+data.table
+}
 \description{
 Get some frames of data.
 }

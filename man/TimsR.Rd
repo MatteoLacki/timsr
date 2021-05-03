@@ -9,6 +9,9 @@ TimsR(path.d)
 \arguments{
 \item{path.d}{Path to the TimsTOF '*.d' folder containing the data (requires the folder to contain only 'analysis.tdf' and 'analysis.tdf_bin').}
 }
+\value{
+instance of TimsR class that represents raw data
+}
 \description{
 Get TimsR data accessor.
 }

@@ -13,6 +13,9 @@
 
 \item{j}{A vector of strings with column names to extract.}
 }
+\value{
+data.table
+}
 \description{
 Get some frames of data.
 }

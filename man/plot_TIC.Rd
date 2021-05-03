@@ -11,6 +11,9 @@ plot_TIC(timsr, recalibrated = TRUE)
 
 \item{recalibrated}{Use Bruker recalibrated total intensities or calculate them from scratch with OpenTIMS?}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Plot will split 'MS1' and 'MS2'.
 }

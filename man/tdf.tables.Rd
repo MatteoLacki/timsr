@@ -10,7 +10,7 @@ tdf.tables(timsr)
 \item{timsr}{Instance of TimsR}
 }
 \value{
-List of data.table objects filled with data from 'analysis.tdf'.
+List of data.tables filled with data from 'analysis.tdf'.
 }
 \description{
 Explore the contentents of the sqlite .tdf database.
