@@ -341,7 +341,7 @@ setup_bruker_so = function(path) opentimsr::setup_bruker_so(path)
 intensity_per_frame = function(timsr, recalibrated=TRUE){
     if(recalibrated){
         frames = table2dt(timsr,'Frames')
-        .intensity_per_frame = frames$SummedIntensities
+        .intensity_per_frame = frames$Frames.SummedIntensities
     } else {
         .intensity_per_frame = sapply(
             timsr@min_frame:timsr@max_frame,
@@ -370,7 +370,7 @@ plot_TIC = function(timsr, recalibrated=TRUE){
     I = intensity_per_frame(timsr, recalibrated)
     RT = retention_times(timsr)
     frames = table2dt(timsr, "Frames")
-    .ms1_mask = frames$MsMsType == 0   
+    .ms1_mask = frames$Frames.MsMsType == 0   
     plot(RT[.ms1_mask],
          I[.ms1_mask], 
          type='l',
